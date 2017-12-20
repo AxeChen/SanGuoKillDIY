@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -39,6 +41,11 @@ public class ZoomImageView extends android.support.v7.widget.AppCompatImageView
 
     private int mTouchSlop;
     private boolean isCanMove;
+    private boolean isCheckLeftAndRight;
+    private boolean isCheckTopAndBottom;
+
+    // 双击放大缩小
+    private GestureDetector mGestureDetector;
 
     public ZoomImageView(Context context) {
         this(context, null);
@@ -54,11 +61,86 @@ public class ZoomImageView extends android.support.v7.widget.AppCompatImageView
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
+    private boolean isAutoScale = false;
+
     private void init() {
         matrix = new Matrix();
         setScaleType(ScaleType.MATRIX);
         mScaleGestureDetector = new ScaleGestureDetector(getContext(), this);
         setOnTouchListener(this);
+        mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+
+                if(isAutoScale){
+                    return true;
+                }
+
+                float x = getX();
+                float y = getY();
+
+                if (getScale() < mMidScale) {
+//                    matrix.postScale(mMidScale / getScale(), mMidScale / getScale(), x, y);
+                    postDelayed(new AutoScaleRunnable(mMidScale,x,y),16);
+                    isAutoScale = true;
+                } else {
+//                    matrix.postScale(mInitScale / getScale(), mInitScale / getScale(), x, y);
+                    postDelayed(new AutoScaleRunnable(mInitScale,x,y),16);
+                    isAutoScale = true;
+                }
+
+                setImageMatrix(matrix);
+                return true;
+            }
+        });
+    }
+
+
+    // 是否可以用属性动画来做
+    private class AutoScaleRunnable implements Runnable {
+        /**
+         * 缩放的目标值
+         */
+        private float mTargetScale;
+        private float x;
+        private float y;
+
+        private final float BIGGIR = 1.07f;
+        private final float SMALL = 0.9f;
+
+        private float tmpScale;
+
+        public AutoScaleRunnable(float mTargetScale, float x, float y) {
+            this.mTargetScale = mTargetScale;
+            this.x = x;
+            this.y = y;
+            if (getScale() < mTargetScale) {
+                tmpScale = BIGGIR;
+            }
+            if (getScale() >= mTargetScale) {
+                tmpScale = SMALL;
+            }
+        }
+
+        @Override
+        public void run() {
+            matrix.postScale(tmpScale, tmpScale, x, y);
+            checkBorderAndCenter();
+            setImageMatrix(matrix);
+
+            float current = getScale();
+            if ((tmpScale > 1.0f && current < mTargetScale) || (tmpScale < 1.0f && current > mTargetScale)) {
+                postDelayed(this, 16);
+
+            } else {
+                float scale = mTargetScale / current;
+                matrix.postScale(scale, scale, x, y);
+                checkBorderAndCenter();
+                setImageMatrix(matrix);
+                isAutoScale = false;
+            }
+        }
     }
 
     @Override
@@ -182,6 +264,9 @@ public class ZoomImageView extends android.support.v7.widget.AppCompatImageView
     }
 
 
+    /**
+     * 放大缩小边界检测
+     */
     private void checkBorderAndCenter() {
         RectF rectF = getMatrixRectF();
         float deltaX = 0;
@@ -241,7 +326,14 @@ public class ZoomImageView extends android.support.v7.widget.AppCompatImageView
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        // 先双击判断
+        if (mGestureDetector.onTouchEvent(event)) {
+            return true;
+        }
+
         mScaleGestureDetector.onTouchEvent(event);
+
 
         float x = 0;
         float y = 0;
@@ -300,9 +392,10 @@ public class ZoomImageView extends android.support.v7.widget.AppCompatImageView
         return true;
     }
 
-    private boolean isCheckLeftAndRight;
-    private boolean isCheckTopAndBottom;
 
+    /**
+     * 滑动边界检测
+     */
     private void checkBorderWhenTranslate() {
         RectF rectF = getMatrixRectF();
         float deltaX = 0;
@@ -328,6 +421,7 @@ public class ZoomImageView extends android.support.v7.widget.AppCompatImageView
         }
         matrix.postTranslate(deltaX, deltaY);
     }
+
 
     private boolean isMoveAction(float x, float y) {
         return Math.sqrt(x * x + y * y) > mTouchSlop;
