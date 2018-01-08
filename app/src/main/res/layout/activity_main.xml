@@ -6,77 +6,130 @@
     android:layout_height="match_parent"
     tools:context="com.mg.axe.sanguokilldiy.MainActivity">
 
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/qun" />
+
     <com.mg.axe.sanguokilldiy.ZoomImageView
-        android:layout_width="250dp"
-        android:layout_height="350dp"
+        android:id="@+id/zoomImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv"
+        android:layout_alignLeft="@+id/iv"
+        android:layout_alignRight="@+id/iv"
+        android:layout_alignTop="@+id/iv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:src="@mipmap/test2" />
+        android:src="@mipmap/gril" />
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="250dp"
-        android:layout_height="350dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@mipmap/custom_no_tag">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/qun">
 
-        <TextView
-            android:id="@+id/ivCountry"
-            android:layout_width="35dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="基"
-            android:textColor="#ffffff"
-            android:textSize="26sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.04"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ivCountry"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:maxLines="5"
-            android:maxWidth="20dp"
-            android:text="陈再峰哈哈"
-            android:textColor="#ffffff"
-            app:layout_constraintBottom_toTopOf="@+id/textView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.107"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCountry"
-            app:layout_constraintVertical_bias="1.0" />
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-8dp"
+                android:src="@mipmap/qun_magatama" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-8dp"
+                android:src="@mipmap/qun_magatama" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-8dp"
+                android:src="@mipmap/qun_magatama" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-8dp"
+                android:src="@mipmap/qun_magatama" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-8dp"
+                android:src="@mipmap/qun_magatama" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ivCountry"
-            android:layout_marginBottom="112dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:maxLines="5"
-            android:maxWidth="20dp"
-            android:text="陈再峰哈哈"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.107"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="90dp"
+            android:ems="1"
+            android:text="哈哈哈哈"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="10dp"
+            android:ems="1"
+            android:text="哈哈哈哈和"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="300dp"
+            android:background="@mipmap/qun_skill_bg">
+
+        </LinearLayout>
 
 
-    </android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="330dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/qun_skill" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/qun_skill" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/qun_skill" />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
 
 </RelativeLayout>
